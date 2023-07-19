@@ -1,25 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
-
+import LayoutHeader from './layout/header/header'
+import Left from './layout/left/left'
+import Right from './layout/right/right'
+import Center from './layout/center/center'
+import styles from './app.less'
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <LayoutHeader />
+      <div className={styles.main}>
+        <Left></Left>
+        <Center></Center>
+        <Right></Right>
+      </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
