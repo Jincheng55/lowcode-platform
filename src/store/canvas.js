@@ -32,6 +32,7 @@ const defaultCanvas = {
 class Canvas {
   constructor(_canvas = defaultCanvas) {
     this.canvas = _canvas
+    this.subs = []
   }
   getCanvas = () => {
     return { ...this.canvas }
@@ -41,6 +42,23 @@ class Canvas {
   }
   getCmps = () => {
     return [...this.canvas.cmps]
+  }
+  addCmps = cmp => {
+    const component = { key: generateUUID(), ...cmp }
+    this.canvas.cmps.push(component)
+    this.updateComponents()
+  }
+  updateComponents = () => {
+    this.subs.forEach(s => s())
+  }
+  subscribe = fn => {
+    this.subs.push(fn)
+    return () => {
+      this.unSubscribe(fn)
+    }
+  }
+  unSubscribe = fn => {
+    this.subs = this.subs.filter(item => item !== fn)
   }
 }
 

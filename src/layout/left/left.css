@@ -1,0 +1,17 @@
+.left {
+  width: 10rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-right: 1px solid lightgray;
+  padding: 10px;
+}
+.left > span {
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.left > span:hover {
+  background-color: #ebebeb;
+}

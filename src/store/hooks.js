@@ -11,3 +11,14 @@ export const useCanvasCmps = () => {
   const cmps = canvas.getCmps()
   return cmps
 }
+
+export const useAddCanvasCmps = () => {
+  const canvas = useContext(CanvasContext)
+  return canvas.addCmps
+}
+
+// export const useSubscribeUpdate = fn => {
+//   const canvas = useContext(CanvasContext)
+//   const unsub = canvas.subscribe(fn)
+//   return unsub
+// }
