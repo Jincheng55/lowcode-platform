@@ -10,7 +10,9 @@ const h1 = {
     color: 'pink',
     position: 'absolute',
     left: 0,
-    top: 0
+    top: 0,
+    width: '100px',
+    height: '50px'
   }
 }
 
@@ -21,7 +23,9 @@ const text = {
     color: 'blue',
     position: 'absolute',
     left: 0,
-    top: 0
+    top: 0,
+    width: '100px',
+    height: '50px'
   }
 }
 

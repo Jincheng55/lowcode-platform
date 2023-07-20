@@ -3,7 +3,7 @@ import { CanvasContext } from './context'
 
 export const useCanvasContextData = () => {
   const canvas = useContext(CanvasContext)
-  return canvas.getCanvas()
+  return canvas
 }
 
 export const useCanvasCmps = () => {

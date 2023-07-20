@@ -12,27 +12,14 @@ const defaultCanvas = {
     backgroundRepeat: 'no-repeat',
     boxSizing: 'content-box',
   },
-  // cmps: [],
-  cmps: [
-    {
-      key: generateUUID(),
-      type: 'text',
-      content: '123',
-      style: { color: 'red' },
-    },
-    {
-      key: generateUUID(),
-      type: 'text',
-      content: '471938247u190',
-      style: { color: 'red' },
-    },
-  ],
+  cmps: [],
 }
 
 class Canvas {
   constructor(_canvas = defaultCanvas) {
     this.canvas = _canvas
     this.subs = []
+    this.selectedIndex = null
   }
   getCanvas = () => {
     return { ...this.canvas }
@@ -46,8 +33,23 @@ class Canvas {
   addCmps = cmp => {
     const component = { key: generateUUID(), ...cmp }
     this.canvas.cmps.push(component)
+    this.setSelectedIndex(this.canvas.cmps.length - 1)
+    // this.updateComponents()
+  }
+
+  setSelectedIndex = index => {
+    this.selectedIndex = index
     this.updateComponents()
   }
+
+  setSelectedCmp = (style, content) => {
+    let component = this.canvas.cmps[this.selectedIndex]
+    if (!component) return
+    component.style = { ...component.style, ...style }
+    if (content) component.content = content
+    this.updateComponents()
+  }
+
   updateComponents = () => {
     this.subs.forEach(s => s())
   }
