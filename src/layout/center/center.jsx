@@ -9,7 +9,7 @@ const Center = () => {
     const start = e.dataTransfer.getData('text')?.split(',')
     const diffX = e.pageX - start[0]
     const diffY = e.pageY - start[1]
-    const cmp = canvas.canvas.cmps[canvas.selectedIndex]
+    const cmp = cmps[canvas.selectedIndex]
     const style = { top: cmp.style.top + diffY, left: cmp.style.left + diffX }
     canvas.setSelectedCmp(style)
   }

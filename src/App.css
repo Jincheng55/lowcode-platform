@@ -8,3 +8,7 @@
   flex-direction: column;
   height: 100vh;
 }
+ol,
+ul {
+  list-style: none;
+}

@@ -11,8 +11,8 @@ const h1 = {
     position: 'absolute',
     left: 0,
     top: 0,
-    width: '100px',
-    height: '50px'
+    width: 100,
+    height: 50
   }
 }
 
@@ -24,8 +24,8 @@ const text = {
     position: 'absolute',
     left: 0,
     top: 0,
-    width: '100px',
-    height: '50px'
+    width: 100,
+    height: 50
   }
 }
 
