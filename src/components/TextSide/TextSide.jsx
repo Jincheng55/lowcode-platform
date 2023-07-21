@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './details.less'
+import styles from './textside.less'
 import { Card } from 'antd'
 import { useAddCanvasCmps } from '../../store/hooks'
 
@@ -29,7 +29,7 @@ const text = {
   }
 }
 
-const Details = () => {
+const TextSide = () => {
   const addCmp = useAddCanvasCmps()
   return (
     <div className={styles.details}>
@@ -43,4 +43,4 @@ const Details = () => {
   )
 }
 
-export default Details
+export default TextSide

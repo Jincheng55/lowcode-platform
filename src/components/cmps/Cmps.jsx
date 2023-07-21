@@ -1,7 +1,8 @@
 import React from 'react'
 import { useCanvasContextData } from '../../store/hooks'
 import styles from './cmps.less'
-
+import Text from './text/Text'
+import ImgCmp from './imgComponent/ImgCmp'
 const Cmp = ({ cmp, index }) => {
   const canvas = useCanvasContextData()
   const onClick = () => {
@@ -48,7 +49,7 @@ const Cmp = ({ cmp, index }) => {
   return (
     <div draggable onDragStart={onDragStart} onClick={onClick} style={{ position: 'absolute' }}>
       {/* 组件 */}
-      <div style={cmp.style}>{cmp.content}</div>
+      {getCmp(cmp)}
       {/* 组件的装饰，选中时的边框 */}
       {
         canvas.selectedIndex === index &&
@@ -130,6 +131,15 @@ const Cmp = ({ cmp, index }) => {
       }
     </div>
   )
+}
+
+const getCmp = (cmp) => {
+  switch (cmp.type) {
+    case 'img':
+      return <ImgCmp cmp={cmp}></ImgCmp>;
+    default:
+      return <Text cmp={cmp}></Text>
+  }
 }
 
 export default Cmp

@@ -1,0 +1,14 @@
+.details {
+  position: absolute;
+  right: 0;
+  transform: translateX(100%);
+  border: 1px solid lightgray;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.details > * {
+  cursor: pointer;
+}

@@ -15,3 +15,7 @@
 .left > span:hover {
   background-color: #ebebeb;
 }
+.selected {
+  background-color: #e6f4ff !important;
+  color: #7cb4ff;
+}
