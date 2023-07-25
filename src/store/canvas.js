@@ -5,12 +5,15 @@ const defaultCanvas = {
   style: {
     width: 320,
     height: 568,
-    backgroundColor: 'white',
+    position: 'relative',
+    border: '1px solid',
+    backgroundColor: '#FFFFFF',
     backgroundImage: '',
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     boxSizing: 'content-box',
+    overflow: 'hidden',
   },
   cmps: [],
 }
@@ -24,8 +27,9 @@ class Canvas {
   getCanvas = () => {
     return { ...this.canvas }
   }
-  setCanvas = canvas => {
-    // this.canvas = Object.assign (this.van)
+  setCanvas = style => {
+    this.canvas.style = { ...this.canvas.style, ...style }
+    this.updateComponents()
   }
   getCmps = () => {
     return [...this.canvas.cmps]

@@ -15,7 +15,7 @@ const Center = () => {
   }
   return (
     <div className={styles.center} >
-      <div className={styles.canvas} onDrop={onDrop} onDragOver={e => e.preventDefault()} >
+      <div style={canvas.canvas.style} onDrop={onDrop} onDragOver={e => e.preventDefault()} >
         {
           cmps.map((cmp, index) => <Cmps key={cmp.key} cmp={cmp} index={index}></Cmps>)
         }

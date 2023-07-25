@@ -7,12 +7,13 @@ const h1 = {
   type: "h1",
   content: '标题',
   style: {
-    color: 'pink',
+    color: '#000000',
     position: 'absolute',
     left: 0,
     top: 0,
     width: 100,
-    height: 50
+    height: 50,
+    fontSize: 20
   }
 }
 
@@ -20,12 +21,13 @@ const text = {
   type: "text",
   content: '正文',
   style: {
-    color: 'blue',
+    color: '#000000',
     position: 'absolute',
     left: 0,
     top: 0,
     width: 100,
-    height: 50
+    height: 50,
+    fontSize: 14
   }
 }
 
