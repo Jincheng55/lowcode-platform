@@ -29,6 +29,7 @@ const EditCmps = () => {
     if (newVal.backgroundImage) newVal.backgroundImage = `url(${newVal.backgroundImage})`
     if (newVal.backgroundColor) newVal.backgroundColor = `#${newVal.backgroundColor.toHex()}`
     if (newVal.color) newVal.color = `#${newVal.color.toHex()}`
+    if (newVal.transform) newVal.transform = `rotate(${newVal.transform}deg)`
     console.log(newVal)
     canvas.setSelectedCmp(newVal)
   }
@@ -36,8 +37,9 @@ const EditCmps = () => {
   useEffect(() => {
     form.setFieldsValue(cmp.style)
     form.setFieldValue('content', cmp.content)
+    form.setFieldValue('transform', !cmp.style.transform ? 0 : (cmp.style.transform.split('(').at(-1)).split('deg')[0])
   }, [cmp.style, form, cmp.content])
-  // todo border radius / border
+  // todo border radius / border font weight line height 
   return (
     <div >
       <h3 style={{ textAlign: 'center', margin: '1rem 0' }}> Edit Component</h3>
@@ -71,6 +73,9 @@ const EditCmps = () => {
           <Input type='number' placeholder='input number (px)' />
         </Form.Item>
         <Form.Item label="top" name='top'>
+          <Input type='number' placeholder='input number (px)' />
+        </Form.Item>
+        <Form.Item label="rotate" name='transform'>
           <Input type='number' placeholder='input number (px)' />
         </Form.Item>
         {/* <Form.Item label="borderWidth" name='borderWidth'>

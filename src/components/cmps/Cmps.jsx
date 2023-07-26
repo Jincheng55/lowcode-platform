@@ -3,6 +3,7 @@ import { useCanvasContextData } from '../../store/hooks'
 import styles from './cmps.less'
 import Text from './text/Text'
 import ImgCmp from './imgComponent/ImgCmp'
+import { RotateRightOutlined } from '@ant-design/icons'
 const Cmp = ({ cmp, index }) => {
   const canvas = useCanvasContextData()
   const onClick = (e) => {
@@ -48,88 +49,131 @@ const Cmp = ({ cmp, index }) => {
     document.addEventListener('mousemove', onmousemove)
   }
 
+  const rotate = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const { style } = cmp;
+    let { height, transform } = style;
+    transform = !transform ? 0 : (transform.split('(').at(-1)).split('deg')[0] + 0
+    const trans = parseFloat(transform);
+    const r = height / 2;
+    const ang = ((trans + 90) * Math.PI) / 180;
+    const [offsetX, offsetY] = [-Math.cos(ang) * r, -Math.sin(ang) * r];
+    let startX = e.pageX + offsetX;
+    let startY = e.pageY + offsetY;
+    const move = (e) => {
+      let x = e.pageX;
+      let y = e.pageY;
+      let disX = x - startX;
+      let disY = y - startY;
+      let deg = (360 * Math.atan2(disY, disX)) / (2 * Math.PI) - 90;
+      deg = deg.toFixed(2);
+      console.log(deg)
+      canvas.setSelectedCmp({
+        transform: `rotate(${deg}deg)`
+      })
+    };
+
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  };
+
   return (
     <div draggable onDragStart={e => onDragStart(e)} onClick={e => onClick(e)} style={{ position: 'absolute' }}>
       {/* 组件 */}
-      {getCmp(cmp)}
+      <div style={cmp.style}>
+        {getCmp(cmp)}
+      </div>
       {/* 组件的装饰，选中时的边框 */}
       {
         canvas.selectedIndex === index &&
-        <div className={styles.decoration} style={{ width: cmp.style.width, height: cmp.style.height, left: cmp.style.left - 2, top: cmp.style.top - 2 }}>
-          <ul
-            className={
-              styles.editStyle
-            }
+        <ul
+          className={
+            styles.editStyle
+          }
+          style={{
+            width: cmp.style.width,
+            height: cmp.style.height,
+            top: cmp.style.top - 2,
+            left: cmp.style.left - 2,
+            transform: cmp.style.transform
+          }}
+          onMouseDown={onMounseDown}
+        >
+          <li
+            className={styles.stretchDot}
+            style={{ top: -8, left: -8 }}
+            data-direction="top left"
+          />
+
+          <li
+            className={styles.stretchDot}
             style={{
-              width: cmp.style.width,
-              height: cmp.style.height,
+              top: -8,
+              left: cmp.style.width / 2 - 8,
             }}
-            onMouseDown={onMounseDown}
+            data-direction="top"
+          />
+
+          <li
+            className={styles.stretchDot}
+            style={{ top: -8, left: cmp.style.width - 8 }}
+            data-direction="top right"
+          />
+
+          <li
+            className={styles.stretchDot}
+            style={{ top: cmp.style.height / 2 - 8, left: cmp.style.width - 8 }}
+            data-direction="right"
+          />
+
+          <li
+            className={styles.stretchDot}
+            style={{
+              top: cmp.style.height - 8,
+              left: cmp.style.width - 8,
+            }}
+            data-direction="bottom right"
+          />
+
+          <li
+            className={styles.stretchDot}
+            style={{
+              top: cmp.style.height - 8,
+              left: cmp.style.width / 2 - 8,
+            }}
+            data-direction="bottom"
+          />
+
+          <li
+            className={styles.stretchDot}
+            style={{
+              top: cmp.style.height - 8,
+              left: -8,
+            }}
+            data-direction="bottom left"
+          />
+          <li
+            className={styles.stretchDot}
+            style={{
+              top: cmp.style.height / 2 - 8,
+              left: -8,
+            }}
+            data-direction="left"
+          />
+          <li className={styles.rotate} style={{
+            top: cmp.style.height + 8,
+            left: cmp.style.width / 2 - 8,
+          }}
+            onMouseDown={rotate}
           >
-            <li
-              className={styles.stretchDot}
-              style={{ top: -8, left: -8 }}
-              data-direction="top left"
-            />
-
-            <li
-              className={styles.stretchDot}
-              style={{
-                top: -8,
-                left: cmp.style.width / 2 - 8,
-              }}
-              data-direction="top"
-            />
-
-            <li
-              className={styles.stretchDot}
-              style={{ top: -8, left: cmp.style.width - 8 }}
-              data-direction="top right"
-            />
-
-            <li
-              className={styles.stretchDot}
-              style={{ top: cmp.style.height / 2 - 8, left: cmp.style.width - 8 }}
-              data-direction="right"
-            />
-
-            <li
-              className={styles.stretchDot}
-              style={{
-                top: cmp.style.height - 8,
-                left: cmp.style.width - 8,
-              }}
-              data-direction="bottom right"
-            />
-
-            <li
-              className={styles.stretchDot}
-              style={{
-                top: cmp.style.height - 8,
-                left: cmp.style.width / 2 - 8,
-              }}
-              data-direction="bottom"
-            />
-
-            <li
-              className={styles.stretchDot}
-              style={{
-                top: cmp.style.height - 8,
-                left: -8,
-              }}
-              data-direction="bottom left"
-            />
-            <li
-              className={styles.stretchDot}
-              style={{
-                top: cmp.style.height / 2 - 8,
-                left: -8,
-              }}
-              data-direction="left"
-            />
-          </ul>
-
-        </div>
+            <RotateRightOutlined />
+          </li>
+        </ul>
       }
     </div>
   )
