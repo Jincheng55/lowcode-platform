@@ -5,11 +5,13 @@ import Text from './text/Text'
 import ImgCmp from './imgComponent/ImgCmp'
 const Cmp = ({ cmp, index }) => {
   const canvas = useCanvasContextData()
-  const onClick = () => {
+  const onClick = (e) => {
+    e.stopPropagation()
     canvas.setSelectedIndex(index)
   }
   const onDragStart = (e) => {
-    onClick()
+    e.stopPropagation()
+    onClick(e)
     e.dataTransfer.setData('text', `${e.pageX},${e.pageY}`)
   }
 
@@ -47,7 +49,7 @@ const Cmp = ({ cmp, index }) => {
   }
 
   return (
-    <div draggable onDragStart={onDragStart} onClick={onClick} style={{ position: 'absolute' }}>
+    <div draggable onDragStart={e => onDragStart(e)} onClick={e => onClick(e)} style={{ position: 'absolute' }}>
       {/* 组件 */}
       {getCmp(cmp)}
       {/* 组件的装饰，选中时的边框 */}

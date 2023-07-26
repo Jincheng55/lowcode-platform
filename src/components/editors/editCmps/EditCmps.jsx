@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useCanvasCmps, useCanvasContextData } from '../../../store/hooks'
 import { ColorPicker, Form, Input } from 'antd'
 
@@ -12,7 +12,8 @@ const EditCmps = () => {
       top: true,
       width: true,
       height: true,
-      fontSize: true
+      fontSize: true,
+      // borderWidth: true
     }
     for (let k in obj) {
       if (numberMap[k]) obj[k] = Number(obj[k])
@@ -20,6 +21,10 @@ const EditCmps = () => {
     return obj
   }
   const onFormChange = (newVal) => {
+    if (newVal.content) {
+      canvas.setSelectedCmp(null, newVal.content)
+      return
+    }
     newVal = valuesToNumber(newVal)
     if (newVal.backgroundImage) newVal.backgroundImage = `url(${newVal.backgroundImage})`
     if (newVal.backgroundColor) newVal.backgroundColor = `#${newVal.backgroundColor.toHex()}`
@@ -27,11 +32,17 @@ const EditCmps = () => {
     console.log(newVal)
     canvas.setSelectedCmp(newVal)
   }
-
+  const [form] = Form.useForm()
+  useEffect(() => {
+    form.setFieldsValue(cmp.style)
+    form.setFieldValue('content', cmp.content)
+  }, [cmp.style, form, cmp.content])
+  // todo border radius / border
   return (
     <div >
       <h3 style={{ textAlign: 'center', margin: '1rem 0' }}> Edit Component</h3>
       <Form
+        form={form}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 16 }}
         layout="horizontal"
@@ -62,6 +73,15 @@ const EditCmps = () => {
         <Form.Item label="top" name='top'>
           <Input type='number' placeholder='input number (px)' />
         </Form.Item>
+        {/* <Form.Item label="borderWidth" name='borderWidth'>
+          <Input type='number' placeholder='input number (px)' />
+        </Form.Item> */}
+        {
+          (cmp.type === 'text' || cmp.type === 'h1') &&
+          <Form.Item label="content" name='content'>
+            <Input />
+          </Form.Item>
+        }
       </Form>
     </div>
   )

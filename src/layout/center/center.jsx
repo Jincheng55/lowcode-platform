@@ -13,14 +13,16 @@ const Center = () => {
     const style = { top: cmp.style.top + diffY, left: cmp.style.left + diffX }
     canvas.setSelectedCmp(style)
   }
+  const canvasOnClick = (e) => {
+    canvas.setSelectedIndex(null)
+  }
   return (
     <div className={styles.center} >
-      <div style={canvas.canvas.style} onDrop={onDrop} onDragOver={e => e.preventDefault()} >
+      <div style={canvas.canvas.style} onClick={e => canvasOnClick(e)} onDrop={onDrop} onDragOver={e => e.preventDefault()} >
         {
           cmps.map((cmp, index) => <Cmps key={cmp.key} cmp={cmp} index={index}></Cmps>)
         }
       </div>
-
     </div>
   )
 }
