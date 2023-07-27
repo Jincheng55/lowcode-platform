@@ -54,6 +54,13 @@ class Canvas {
     this.updateComponents()
   }
 
+  setTemplate = template => {
+    this.setCanvas(template.canvas.style)
+    for (const cmp of template.canvas.cmps) {
+      this.addCmps(cmp)
+    }
+  }
+
   updateComponents = () => {
     this.subs.forEach(s => s())
   }

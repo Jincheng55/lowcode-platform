@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import styles from './center.less'
 import { useCanvasCmps, useCanvasContextData } from '../../store/hooks'
 import Cmps from '../../components/cmps/Cmps'
+import { InputNumber } from 'antd'
 const Center = () => {
   const cmps = useCanvasCmps()
   const canvas = useCanvasContextData()
@@ -15,6 +16,10 @@ const Center = () => {
   }
   const canvasOnClick = (e) => {
     canvas.setSelectedIndex(null)
+  }
+  const onScaleChange = (val) => {
+    if (!val) return
+    canvas.setCanvas({ transform: `scale(${val / 100})` })
   }
 
   const keyEventMove = (e) => {
@@ -56,6 +61,9 @@ const Center = () => {
         {
           cmps.map((cmp, index) => <Cmps key={cmp.key} cmp={cmp} index={index}></Cmps>)
         }
+      </div>
+      <div className={styles.scale}>
+        <InputNumber addonAfter="%" min={1} defaultValue={100} onChange={onScaleChange} />
       </div>
     </div>
   )
