@@ -18,14 +18,17 @@ const graph = {
   }
 }
 const GraphSide = () => {
-
+  const onDragStart = (e) => {
+    e.stopPropagation()
+    e.dataTransfer.setData('cmp', JSON.stringify(graph))
+  }
   const canvas = useCanvasContextData()
   const addGraph = () => {
     canvas.addCmps(graph)
   }
   return (
     <div className={styles.details}>
-      <Card onClick={addGraph}>
+      <Card onClick={addGraph} draggable onDragStart={e => onDragStart(e)} >
         添加图形
       </Card>
     </div>

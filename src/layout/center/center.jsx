@@ -8,11 +8,14 @@ const Center = () => {
   const canvas = useCanvasContextData()
   const onDrop = (e) => {
     const start = e.dataTransfer.getData('text')?.split(',')
-    const diffX = e.pageX - start[0]
-    const diffY = e.pageY - start[1]
-    const cmp = cmps[canvas.selectedIndex]
-    const style = { top: cmp.style.top + diffY, left: cmp.style.left + diffX }
-    canvas.setSelectedCmp(style)
+    if (start?.length > 1) {
+      cmpMove(start, e.pageX, e.pageY)
+      return
+    }
+    const cmpString = e.dataTransfer.getData('cmp')
+    if (cmpString) {
+      dragCmpAdd(cmpString, e.pageX, e.pageY)
+    }
   }
   const canvasOnClick = (e) => {
     canvas.setSelectedIndex(null)
@@ -21,7 +24,24 @@ const Center = () => {
     if (!val) return
     canvas.setCanvas({ transform: `scale(${val / 100})` })
   }
-
+  // 移动选中组件
+  const cmpMove = (start, pageX, pageY) => {
+    const scale = canvas.canvas.style.transform?.split('scale(')?.at(-1)?.split(')')[0] ?? 1
+    const diffX = pageX - start[0]
+    const diffY = pageY - start[1]
+    const cmp = cmps[canvas.selectedIndex]
+    const style = { top: cmp.style.top + diffY / scale, left: cmp.style.left + diffX / scale }
+    canvas.setSelectedCmp(style)
+  }
+  // 拖拽左边组件至画布指定位置
+  const dragCmpAdd = (cmpString, pageX, pageY) => {
+    const scale = canvas.canvas.style.transform?.split('scale(')?.at(-1)?.split(')')[0] ?? 1
+    const cmpJson = JSON.parse(cmpString)
+    cmpJson.style.top = (pageY - 114) / scale
+    const leftStart = (document.body.clientWidth - 350 - 181 - canvas.canvas.style.width * scale) / 2
+    cmpJson.style.left = (pageX - leftStart - 181) / scale
+    canvas.addCmps(cmpJson)
+  }
   const keyEventMove = (e) => {
     if (canvas.selectedIndex === null) return
     if (e.keyCode < 37 || e.keyCode > 40) return
@@ -57,7 +77,7 @@ const Center = () => {
   }, []);
   return (
     <div className={styles.center} id='center' tabIndex="0" >
-      <div style={canvas.canvas.style} onClick={e => canvasOnClick(e)} onDrop={onDrop} onDragOver={e => e.preventDefault()} >
+      <div style={{ ...canvas.canvas.style, position: 'absolute', top: '50px' }} onClick={e => canvasOnClick(e)} onDrop={onDrop} onDragOver={e => e.preventDefault()} >
         {
           cmps.map((cmp, index) => <Cmps key={cmp.key} cmp={cmp} index={index}></Cmps>)
         }

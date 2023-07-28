@@ -3,8 +3,8 @@ import styles from './textside.less'
 import { Card } from 'antd'
 import { useAddCanvasCmps } from '../../store/hooks'
 
-const h1 = {
-  type: "h1",
+const title = {
+  type: "h2",
   content: '标题',
   style: {
     color: '#000000',
@@ -30,15 +30,23 @@ const text = {
     fontSize: 14
   }
 }
+const onTextDragStart = (e) => {
+  e.stopPropagation()
+  e.dataTransfer.setData('cmp', JSON.stringify(text))
+}
 
+const onTitleDragStart = (e) => {
+  e.stopPropagation()
+  e.dataTransfer.setData('cmp', JSON.stringify(title))
+}
 const TextSide = () => {
   const addCmp = useAddCanvasCmps()
   return (
     <div className={styles.details}>
-      <Card onClick={() => addCmp(h1)}>
+      <Card draggable onDragStart={e => onTitleDragStart(e)} onClick={() => addCmp(title)}>
         <h2>标题</h2>
       </Card>
-      <Card onClick={() => addCmp(text)}>
+      <Card draggable onDragStart={e => onTextDragStart(e)} onClick={() => addCmp(text)}>
         <p>正文</p>
       </Card>
     </div>
