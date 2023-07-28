@@ -2,6 +2,7 @@ import React from 'react'
 import styles from '../ImgSide/imgside.less'
 import { Card } from 'antd'
 import { useCanvasContextData } from '../../store/hooks'
+import { generateUUID } from '../../utils/uuid'
 const TemplateSide = () => {
   const canvas = useCanvasContextData()
   const fakeData = [
@@ -22,6 +23,7 @@ const TemplateSide = () => {
         },
         cmps: [
           {
+            key: generateUUID(),
             type: "text",
             content: 'testTemplate',
             style: {

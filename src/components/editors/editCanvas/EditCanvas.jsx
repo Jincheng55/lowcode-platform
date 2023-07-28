@@ -18,7 +18,7 @@ const EditCanvas = () => {
     <div >
       <h3 style={{ textAlign: 'center', margin: '1rem 0' }}> Edit Background</h3>
       <Form
-        labelCol={{ span: 9 }}
+        labelCol={{ span: 6 }}
         wrapperCol={{ span: 16 }}
         layout="horizontal"
         initialValues={canvas.canvas.style}
@@ -30,10 +30,10 @@ const EditCanvas = () => {
         <Form.Item label="height" name='height'>
           <Input type='number' placeholder='input number (px)' />
         </Form.Item>
-        <Form.Item label="backgroundImage" name='backgroundImage'>
+        <Form.Item label="bgImage" name='backgroundImage'>
           <Input placeholder='input url' />
         </Form.Item>
-        <Form.Item label="backgroundColor" name='backgroundColor'>
+        <Form.Item label="bgColor" name='backgroundColor'>
           <ColorPicker />
         </Form.Item>
       </Form>
