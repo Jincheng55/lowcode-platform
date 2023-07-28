@@ -10,11 +10,36 @@ const Cmp = ({ cmp, index }) => {
     e.stopPropagation()
     canvas.setSelectedIndex(index)
   }
-  const onDragStart = (e) => {
-    e.stopPropagation()
+  // 在画布上移动组件位置
+  const onMouseDownOfCmp = (e) => {
+    e.preventDefault();
     onClick(e)
-    e.dataTransfer.setData('text', `${e.pageX},${e.pageY}`)
-  }
+    let startX = e.pageX;
+    let startY = e.pageY;
+    const scale = canvas.canvas.style.transform?.split('scale(')?.at(-1)?.split(')')[0] ?? 1
+    const cmp = canvas.canvas.cmps[canvas.selectedIndex]
+    const move = (e) => {
+      const x = e.pageX;
+      const y = e.pageY;
+      let disX = x - startX;
+      let disY = y - startY;
+      disX = disX / scale;
+      disY = disY / scale;
+      const top = cmp.style.top + disY;
+      const left = cmp.style.left + disX;
+      canvas.setSelectedCmp({ top, left })
+      startX = x;
+      startY = y;
+    };
+
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  };
+
 
   const onMounseDown = (e) => {
     const direction = e.target.dataset.direction
@@ -83,7 +108,9 @@ const Cmp = ({ cmp, index }) => {
   };
 
   return (
-    <div draggable onDragStart={e => onDragStart(e)} onClick={e => onClick(e)} style={{ position: 'absolute' }}>
+    <div
+      onMouseDown={onMouseDownOfCmp}
+      onClick={e => onClick(e)} style={{ position: 'absolute' }}>
       {/* 组件 */}
       <div style={cmp.style}>
         {getCmp(cmp)}

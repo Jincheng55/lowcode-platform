@@ -7,11 +7,6 @@ const Center = () => {
   const cmps = useCanvasCmps()
   const canvas = useCanvasContextData()
   const onDrop = (e) => {
-    const start = e.dataTransfer.getData('text')?.split(',')
-    if (start?.length > 1) {
-      cmpMove(start, e.pageX, e.pageY)
-      return
-    }
     const cmpString = e.dataTransfer.getData('cmp')
     if (cmpString) {
       dragCmpAdd(cmpString, e.pageX, e.pageY)
@@ -24,15 +19,7 @@ const Center = () => {
     if (!val) return
     canvas.setCanvas({ transform: `scale(${val / 100})` })
   }
-  // 移动选中组件
-  const cmpMove = (start, pageX, pageY) => {
-    const scale = canvas.canvas.style.transform?.split('scale(')?.at(-1)?.split(')')[0] ?? 1
-    const diffX = pageX - start[0]
-    const diffY = pageY - start[1]
-    const cmp = cmps[canvas.selectedIndex]
-    const style = { top: cmp.style.top + diffY / scale, left: cmp.style.left + diffX / scale }
-    canvas.setSelectedCmp(style)
-  }
+
   // 拖拽左边组件至画布指定位置
   const dragCmpAdd = (cmpString, pageX, pageY) => {
     const scale = canvas.canvas.style.transform?.split('scale(')?.at(-1)?.split(')')[0] ?? 1
