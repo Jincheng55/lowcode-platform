@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styles from './center.less'
 import { useCanvasCmps, useCanvasContextData } from '../../store/hooks'
 import Cmps from '../../components/cmps/Cmps'
@@ -59,11 +59,8 @@ const Center = () => {
     }
     canvas.setSelectedCmp(newStyle);
   }
-  useEffect(() => {
-    document.getElementById("center").onkeydown = keyEventMove;
-  }, []);
   return (
-    <div className={styles.center} id='center' tabIndex="0" >
+    <div className={styles.center} id='center' tabIndex="0" onKeyDown={keyEventMove}>
       <div style={{ ...canvas.canvas.style, position: 'absolute', top: '50px' }} onClick={e => canvasOnClick(e)} onDrop={onDrop} onDragOver={e => e.preventDefault()} >
         {
           cmps.map((cmp, index) => <Cmps key={cmp.key} cmp={cmp} index={index}></Cmps>)

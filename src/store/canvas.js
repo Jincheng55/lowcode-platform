@@ -52,13 +52,13 @@ class Canvas {
     this.updateComponents()
   }
 
-  setSelectedCmp = (style, content) => {
+  setSelectedCmp = (style, content, donotAdd) => {
     let component = this.canvas.cmps[this.selectedIndex]
     if (!component) return
     component.style = { ...component.style, ...style }
     if (content) component.content = content
     this.updateComponents()
-    this.addHistory()
+    if (!donotAdd) this.addHistory()
   }
 
   setTemplate = template => {

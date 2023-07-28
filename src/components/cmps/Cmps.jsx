@@ -27,12 +27,13 @@ const Cmp = ({ cmp, index }) => {
       disY = disY / scale;
       const top = cmp.style.top + disY;
       const left = cmp.style.left + disX;
-      canvas.setSelectedCmp({ top, left })
+      canvas.setSelectedCmp({ top, left }, null, true)
       startX = x;
       startY = y;
     };
 
     const up = () => {
+      canvas.addHistory()
       document.removeEventListener("mousemove", move);
       document.removeEventListener("mouseup", up);
     };
@@ -43,33 +44,40 @@ const Cmp = ({ cmp, index }) => {
 
   const onMounseDown = (e) => {
     const direction = e.target.dataset.direction
+    const scale = canvas.canvas.style.transform?.split('scale(')?.at(-1)?.split(')')[0] ?? 1
     if (!direction) return
     e.preventDefault()
     e.stopPropagation()
     const start = [e.pageX, e.pageY]
+    const up = () => {
+      console.log(1)
+      canvas.addHistory()
+      document.removeEventListener('mousemove', onmousemove)
+      document.removeEventListener('mouseup', up)
+    }
     const onmousemove = (e) => {
       const diff = [e.pageX - start[0], e.pageY - start[1]]
       const directArr = direction.split(' ')
       const style = {}
+      diff[1] = Number(diff[1].toFixed(2))
+      diff[0] = Number(diff[0].toFixed(2))
       // 左上点位移动时需要取反
       if (directArr.indexOf('top') >= 0) {
         diff[1] = - diff[1]
-        style.top = cmp.style.top - diff[1]
+        style.top = cmp.style.top - diff[1] / scale
       }
       if (directArr.indexOf('left') >= 0) {
         diff[0] = - diff[0]
-        style.left = cmp.style.left - diff[0]
+        style.left = Number((cmp.style.left - diff[0] / scale).toFixed(2))
       }
-      style.width = cmp.style.width + diff[0]
-      style.height = cmp.style.height + diff[1]
-      canvas.setSelectedCmp(style)
+      style.width = cmp.style.width + diff[0] / scale
+      style.height = cmp.style.height + diff[1] / scale
+      canvas.setSelectedCmp(style, null, true)
       // 将本次移动的结束点作为下次移动的起点
       start[0] = e.pageX
       start[1] = e.pageY
       // 鼠标抬起时取消事件
-      document.addEventListener('mouseup', () => {
-        document.removeEventListener('mousemove', onmousemove)
-      })
+      document.addEventListener('mouseup', up)
     }
     document.addEventListener('mousemove', onmousemove)
   }
@@ -94,12 +102,11 @@ const Cmp = ({ cmp, index }) => {
       let deg = (360 * Math.atan2(disY, disX)) / (2 * Math.PI) - 90;
       deg = deg.toFixed(2);
       console.log(deg)
-      canvas.setSelectedCmp({
-        transform: `rotate(${deg}deg)`
-      })
+      canvas.setSelectedCmp({ transform: `rotate(${deg}deg)` }, null, true)
     };
 
     const up = () => {
+      canvas.addHistory()
       document.removeEventListener("mousemove", move);
       document.removeEventListener("mouseup", up);
     };
