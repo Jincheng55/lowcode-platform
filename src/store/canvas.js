@@ -41,7 +41,7 @@ class Canvas {
     return [...this.canvas.cmps]
   }
   addCmps = cmp => {
-    const component = { key: generateUUID(), ...cmp }
+    const component = { ...cmp, key: generateUUID() }
     this.canvas.cmps.push(component)
     this.setSelectedIndex(this.canvas.cmps.length - 1)
     this.addHistory()

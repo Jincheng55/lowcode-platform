@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useCanvasContextData } from '../../store/hooks'
 import styles from './cmps.less'
 import Text from './text/Text'
 import ImgCmp from './imgComponent/ImgCmp'
 import { RotateRightOutlined } from '@ant-design/icons'
+import RightClickMenu from './rightClickMenu/RightClickMenu'
 const Cmp = ({ cmp, index }) => {
   const canvas = useCanvasContextData()
   const onClick = (e) => {
@@ -50,7 +51,6 @@ const Cmp = ({ cmp, index }) => {
     e.stopPropagation()
     const start = [e.pageX, e.pageY]
     const up = () => {
-      console.log(1)
       canvas.addHistory()
       document.removeEventListener('mousemove', onmousemove)
       document.removeEventListener('mouseup', up)
@@ -114,13 +114,21 @@ const Cmp = ({ cmp, index }) => {
     document.addEventListener("mouseup", up);
   };
 
+  const [showMenu, setShowMenu] = useState(false)
+  const showRightMenu = e => {
+    e.preventDefault()
+    setShowMenu(true)
+  }
   return (
     <div
       onMouseDown={onMouseDownOfCmp}
-      onClick={e => onClick(e)} style={{ position: 'absolute' }}>
+      onClick={e => onClick(e)} style={{ position: 'absolute' }}
+      onContextMenu={e => showRightMenu(e)}
+    >
       {/* 组件 */}
       <div style={cmp.style}>
         {getCmp(cmp)}
+        {showMenu && index === canvas.selectedIndex && <RightClickMenu cmp={cmp} index={index} />}
       </div>
       {/* 组件的装饰，选中时的边框 */}
       {
