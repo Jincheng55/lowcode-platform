@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCanvasContextData } from '../../store/hooks'
 import styles from './cmps.less'
 import Text from './text/Text'
 import ImgCmp from './imgComponent/ImgCmp'
 import { RotateRightOutlined } from '@ant-design/icons'
 import RightClickMenu from './rightClickMenu/RightClickMenu'
+import { useRef } from 'react'
 const Cmp = ({ cmp, index }) => {
   const canvas = useCanvasContextData()
   const onClick = (e) => {
@@ -119,16 +120,43 @@ const Cmp = ({ cmp, index }) => {
     e.preventDefault()
     setShowMenu(true)
   }
+  useEffect(() => {
+    if (canvas.selectedIndex !== index) setShowMenu(false)
+  }, [canvas.selectedIndex, index])
+
+  const [edit, setEdit] = useState(false)
+  const textAreaRef = useRef(null)
+  const editText = (e) => {
+    e.stopPropagation()
+    if (cmp.type === 'text' || cmp.type === 'h2') setEdit(true)
+  }
+  useEffect(() => {
+    if (edit) textAreaRef.current.focus()
+  }, [edit])
+
+  const onTextAreaBlur = () => {
+    canvas.setSelectedCmp(null, textAreaRef.current.value)
+    setEdit(false)
+  }
+
   return (
     <div
       onMouseDown={onMouseDownOfCmp}
       onClick={e => onClick(e)} style={{ position: 'absolute' }}
       onContextMenu={e => showRightMenu(e)}
+      onDoubleClick={editText}
     >
       {/* 组件 */}
       <div style={cmp.style}>
-        {getCmp(cmp)}
-        {showMenu && index === canvas.selectedIndex && <RightClickMenu cmp={cmp} index={index} />}
+        {!edit ?
+          getCmp(cmp) :
+          <textarea
+            ref={textAreaRef}
+            style={{ ...cmp.style, top: 'unset', left: 'unset' }}
+            defaultValue={cmp.content}
+            onKeyDown={e => e.stopPropagation()}
+            onBlur={onTextAreaBlur}></textarea>}
+        {showMenu && index === canvas.selectedIndex && <RightClickMenu setShowMenu={setShowMenu} cmp={cmp} index={index} />}
       </div>
       {/* 组件的装饰，选中时的边框 */}
       {

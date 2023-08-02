@@ -94,6 +94,28 @@ class Canvas {
     this.selectedIndex = null
     this.updateComponents()
   }
+// todo 渲染可能因为引用没变，index修改没有正确更新试图
+// todo  置顶/底
+  moveupCmp = index => {
+    if (index >= this.canvas.cmps.length - 1) return
+    const newIndex = index + 1
+    this.swapCmp(newIndex, index)
+    this.selectedIndex += 1
+    this.updateComponents()
+  }
+  moveDownCmp = index => {
+    if (index <= 0) return
+    const newIndex = index - 1
+    this.swapCmp(newIndex, index)
+    this.selectedIndex -= 1
+    this.updateComponents()
+  }
+
+  swapCmp = (newIndex, index) => {
+    const temp = this.canvas.cmps[index]
+    this.canvas.cmps[index] = this.canvas.cmps[newIndex]
+    this.canvas.cmps[newIndex] = temp
+  }
 
   clearCanvas = () => {
     this.canvas = defaultCanvas()

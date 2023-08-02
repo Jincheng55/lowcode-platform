@@ -13,7 +13,9 @@ const title = {
     top: 0,
     width: 100,
     height: 50,
-    fontSize: 20
+    fontSize: 32,
+    fontWeight: 'bold',
+    whiteSpace: 'pre'
   }
 }
 
@@ -27,7 +29,8 @@ const text = {
     top: 0,
     width: 100,
     height: 50,
-    fontSize: 14
+    fontSize: 14,
+    whiteSpace: 'pre'
   }
 }
 const onTextDragStart = (e) => {

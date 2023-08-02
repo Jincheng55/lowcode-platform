@@ -10,7 +10,7 @@
 .scale {
   position: absolute;
   right: 1rem;
-  bottom: 10px;
+  top: 10px;
 }
 .scale input {
   width: 65px!important;
