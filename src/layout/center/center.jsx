@@ -30,34 +30,33 @@ const Center = () => {
     canvas.addCmps(cmpJson)
   }
   const keyEventMove = (e) => {
-    if (canvas.selectedIndex === null) return
+    if (!canvas.selectedIndex.size) return
     if (e.keyCode < 37 || e.keyCode > 40) return
     e.stopPropagation();
     // 禁止默认事件，不然引发的可能是页面的上下左右滚动。
     e.preventDefault();
-    const { top, left } = cmps[canvas.selectedIndex].style;
-    const newStyle = { top, left };
+    const newStyle = {};
     switch (e.keyCode) {
       // 左
       case 37:
-        newStyle.left -= 1;
+        newStyle.left = - 1;
         break;
       // 上
       case 38:
-        newStyle.top -= 1;
+        newStyle.top = - 1;
         break;
       // 右
       case 39:
-        newStyle.left += 1;
+        newStyle.left = 1;
         break;
       // 下
       case 40:
-        newStyle.top += 1;
+        newStyle.top = 1;
         break;
       default:
         break;
     }
-    canvas.setSelectedCmp(newStyle);
+    canvas.patchSetSelectedCmps(newStyle);
   }
   return (
     <div className={styles.center} id='center' tabIndex="0" onKeyDown={keyEventMove}>

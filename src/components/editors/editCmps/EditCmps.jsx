@@ -5,7 +5,7 @@ import { ColorPicker, Form, Input } from 'antd'
 const EditCmps = () => {
   const canvas = useCanvasContextData()
   const cmps = useCanvasCmps()
-  const cmp = cmps[canvas.selectedIndex]
+  const cmp = cmps[canvas.getSelectedIndex()[0]]
   const valuesToNumber = (obj) => {
     const numberMap = {
       left: true,

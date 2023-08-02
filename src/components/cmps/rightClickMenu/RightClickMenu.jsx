@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import styles from './rightClickMenu.less'
 import { Button } from 'antd'
 import { useCanvasContextData } from '../../../store/hooks'
@@ -7,18 +7,13 @@ const RightClickMenu = ({ cmp, index, setShowMenu }) => {
   const canvas = useCanvasContextData()
   const copyCmp = (e) => {
     e.stopPropagation()
-    const newCmp = JSON.parse(JSON.stringify(cmp))
-    newCmp.style.top += 40
-    newCmp.style.left += 40
-    canvas.addCmps(newCmp)
+    canvas.copyCmps()
     setShowMenu(false)
   }
 
   const delCmp = (e) => {
     e.stopPropagation()
-    if (canvas.selectedIndex === index) canvas.selectedIndex = null
-    canvas.canvas.cmps = canvas.canvas.cmps.filter(item => item.key !== cmp.key)
-    canvas.updateComponents()
+    canvas.deleteCmps()
     setShowMenu(false)
   }
 
@@ -40,12 +35,18 @@ const RightClickMenu = ({ cmp, index, setShowMenu }) => {
       <Button type="text" block onClick={e => delCmp(e)}>
         delete
       </Button>
-      <Button type="text" block onClick={e => moveup(index)}>
-        up
-      </Button>
-      <Button type="text" block onClick={e => movedown(index)}>
-        down
-      </Button>
+      {
+        canvas.selectedIndex.size === 1 &&
+        <Fragment>
+          <Button type="text" block onClick={e => moveup(index)}>
+            up
+          </Button>
+          <Button type="text" block onClick={e => movedown(index)}>
+            down
+          </Button>
+        </Fragment>
+      }
+
     </div>
   )
 }

@@ -9,8 +9,13 @@ import { useRef } from 'react'
 const Cmp = ({ cmp, index }) => {
   const canvas = useCanvasContextData()
   const onClick = (e) => {
+    if (e.metaKey) {
+      canvas.setSelectedIndex(index, true)
+    }
+    else {
+      canvas.setSelectedIndex(index)
+    }
     e.stopPropagation()
-    canvas.setSelectedIndex(index)
   }
   // 在画布上移动组件位置
   const onMouseDownOfCmp = (e) => {
@@ -19,17 +24,14 @@ const Cmp = ({ cmp, index }) => {
     let startX = e.pageX;
     let startY = e.pageY;
     const scale = canvas.canvas.style.transform?.split('scale(')?.at(-1)?.split(')')[0] ?? 1
-    const cmp = canvas.canvas.cmps[canvas.selectedIndex]
     const move = (e) => {
       const x = e.pageX;
       const y = e.pageY;
       let disX = x - startX;
       let disY = y - startY;
-      disX = disX / scale;
-      disY = disY / scale;
-      const top = cmp.style.top + disY;
-      const left = cmp.style.left + disX;
-      canvas.setSelectedCmp({ top, left }, null, true)
+      disX = Number((disX / scale).toFixed(2))
+      disY = Number((disY / scale).toFixed(2))
+      canvas.patchSetSelectedCmps({ top: disY, left: disX })
       startX = x;
       startY = y;
     };
@@ -60,20 +62,18 @@ const Cmp = ({ cmp, index }) => {
       const diff = [e.pageX - start[0], e.pageY - start[1]]
       const directArr = direction.split(' ')
       const style = {}
-      diff[1] = Number(diff[1].toFixed(2))
-      diff[0] = Number(diff[0].toFixed(2))
       // 左上点位移动时需要取反
       if (directArr.indexOf('top') >= 0) {
         diff[1] = - diff[1]
-        style.top = cmp.style.top - diff[1] / scale
+        style.top = - (diff[1] / scale).toFixed(2) - 0
       }
       if (directArr.indexOf('left') >= 0) {
         diff[0] = - diff[0]
-        style.left = Number((cmp.style.left - diff[0] / scale).toFixed(2))
+        style.left = -  (diff[0] / scale).toFixed(2) - 0
       }
-      style.width = cmp.style.width + diff[0] / scale
-      style.height = cmp.style.height + diff[1] / scale
-      canvas.setSelectedCmp(style, null, true)
+      style.width = (diff[0] / scale).toFixed(2) - 0
+      style.height = (diff[1] / scale).toFixed(2) - 0
+      canvas.patchSetSelectedCmps(style)
       // 将本次移动的结束点作为下次移动的起点
       start[0] = e.pageX
       start[1] = e.pageY
@@ -102,7 +102,6 @@ const Cmp = ({ cmp, index }) => {
       let disY = y - startY;
       let deg = (360 * Math.atan2(disY, disX)) / (2 * Math.PI) - 90;
       deg = deg.toFixed(2);
-      console.log(deg)
       canvas.setSelectedCmp({ transform: `rotate(${deg}deg)` }, null, true)
     };
 
@@ -121,8 +120,8 @@ const Cmp = ({ cmp, index }) => {
     setShowMenu(true)
   }
   useEffect(() => {
-    if (canvas.selectedIndex !== index) setShowMenu(false)
-  }, [canvas.selectedIndex, index])
+    if (!canvas.selectedIndex.has(index) && canvas.selectedIndex.size === 1) setShowMenu(false)
+  }, [canvas.selectedIndex.size, index, canvas.selectedIndex])
 
   const [edit, setEdit] = useState(false)
   const textAreaRef = useRef(null)
@@ -156,11 +155,11 @@ const Cmp = ({ cmp, index }) => {
             defaultValue={cmp.content}
             onKeyDown={e => e.stopPropagation()}
             onBlur={onTextAreaBlur}></textarea>}
-        {showMenu && index === canvas.selectedIndex && <RightClickMenu setShowMenu={setShowMenu} cmp={cmp} index={index} />}
+        {showMenu && canvas.selectedIndex.has(index) && <RightClickMenu setShowMenu={setShowMenu} cmp={cmp} index={index} />}
       </div>
       {/* 组件的装饰，选中时的边框 */}
       {
-        canvas.selectedIndex === index &&
+        canvas.selectedIndex.has(index) &&
         <ul
           className={
             styles.editStyle

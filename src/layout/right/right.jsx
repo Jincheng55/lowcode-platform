@@ -8,7 +8,7 @@ const Right = () => {
   return (
     <div className={styles.right}>
       {
-        canvas.selectedIndex === null ? <EditCanvas /> : <EditCmps />
+        canvas.getSelectedIndex().length !== 1 ? <EditCanvas /> : <EditCmps />
       }
     </div>
   )
