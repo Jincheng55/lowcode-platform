@@ -13,7 +13,7 @@ const defaultCanvas = () => {
       backgroundPosition: 'center',
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
-      boxSizing: 'content-box',
+      boxSizing: 'border-box',
       overflowX: 'hidden',
       transformOrigin: '50% 0%',
     },

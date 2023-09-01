@@ -4,9 +4,10 @@ import { Card } from 'antd'
 import { useAddCanvasCmps } from '../../store/hooks'
 
 const title = {
-  type: "h2",
+  type: "h3",
   content: '标题',
   style: {
+    boxSizing: 'border-box',
     color: '#000000',
     position: 'absolute',
     left: 0,
@@ -20,9 +21,10 @@ const title = {
 }
 
 const text = {
-  type: "text",
+  type: "p",
   content: '正文',
   style: {
+    boxSizing: 'border-box',
     color: '#000000',
     position: 'absolute',
     left: 0,

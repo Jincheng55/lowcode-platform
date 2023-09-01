@@ -24,7 +24,7 @@ const TemplateSide = () => {
         cmps: [
           {
             key: generateUUID(),
-            type: "text",
+            type: "p",
             content: 'testTemplate',
             style: {
               color: '#2d7ac2',

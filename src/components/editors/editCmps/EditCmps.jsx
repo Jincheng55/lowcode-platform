@@ -13,7 +13,6 @@ const EditCmps = () => {
       width: true,
       height: true,
       fontSize: true,
-      // borderWidth: true
     }
     for (let k in obj) {
       if (numberMap[k]) obj[k] = Number(obj[k])
@@ -26,18 +25,21 @@ const EditCmps = () => {
       return
     }
     newVal = valuesToNumber(newVal)
-    if (newVal.backgroundImage) newVal.backgroundImage = `url(${newVal.backgroundImage})`
-    if (newVal.backgroundColor) newVal.backgroundColor = `#${newVal.backgroundColor.toHex()}`
-    if (newVal.color) newVal.color = `#${newVal.color.toHex()}`
-    if (newVal.transform) newVal.transform = `rotate(${newVal.transform}deg)`
-    console.log(newVal)
-    canvas.setSelectedCmp(newVal)
+    const changeVal = {}
+    if (newVal.backgroundImage) changeVal.backgroundImage = `url(${newVal.backgroundImage})`
+    if (newVal.backgroundColor) changeVal.backgroundColor = `#${newVal.backgroundColor.toHex()}`
+    if (newVal.color) changeVal.color = `#${newVal.color.toHex()}`
+    if (newVal.transform) changeVal.transform = `rotate(${newVal.transform}deg)`
+    if (newVal.border) changeVal.border = `${newVal.border}px solid`
+    console.log(changeVal)
+    canvas.setSelectedCmp(changeVal)
   }
   const [form] = Form.useForm()
   useEffect(() => {
     form.setFieldsValue(cmp.style)
     form.setFieldValue('content', cmp.content)
     form.setFieldValue('transform', !cmp.style.transform ? 0 : (cmp.style.transform.split('(').at(-1)).split('deg')[0])
+    form.setFieldValue('border', cmp.style.border?.split('px solid')[0] ?? 0)
   }, [cmp.style, form, cmp.content])
   // todo  border font weight line height 
   return (
@@ -80,6 +82,9 @@ const EditCmps = () => {
         </Form.Item>
         <Form.Item label="borderRadius" name='borderRadius'>
           <Input placeholder='input 5px / 50% string' />
+        </Form.Item>
+        <Form.Item label="border" name='border'>
+          <Input type='number' placeholder='input number (px)' />
         </Form.Item>
         {
           (cmp.type === 'text' || cmp.type === 'h1') &&
