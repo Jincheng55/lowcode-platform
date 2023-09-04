@@ -60,7 +60,7 @@ const Center = () => {
   }
   return (
     <div className={styles.center} id='center' tabIndex="0" onKeyDown={keyEventMove}>
-      <div style={{ ...canvas.canvas.style, position: 'absolute', top: '50px' }} onClick={e => canvasOnClick(e)} onDrop={onDrop} onDragOver={e => e.preventDefault()} >
+      <div id='canvas' style={{ ...canvas.canvas.style, position: 'absolute', top: '50px' }} onClick={e => canvasOnClick(e)} onDrop={onDrop} onDragOver={e => e.preventDefault()} >
         {
           cmps.map((cmp, index) => <Cmps key={cmp.key} cmp={cmp} index={index}></Cmps>)
         }

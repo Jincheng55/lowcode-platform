@@ -8,7 +8,7 @@ const title = {
   content: '标题',
   style: {
     boxSizing: 'border-box',
-    color: '#000000',
+    // color: '#000000',
     position: 'absolute',
     left: 0,
     top: 0,
@@ -25,13 +25,13 @@ const text = {
   content: '正文',
   style: {
     boxSizing: 'border-box',
-    color: '#000000',
+    // color: '#000000',
     position: 'absolute',
     left: 0,
     top: 0,
     width: 100,
     height: 50,
-    fontSize: 14,
+    // fontSize: 14,
     whiteSpace: 'pre'
   }
 }

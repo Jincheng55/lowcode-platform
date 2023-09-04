@@ -41,7 +41,6 @@ const EditCmps = () => {
     form.setFieldValue('transform', !cmp.style.transform ? 0 : (cmp.style.transform.split('(').at(-1)).split('deg')[0])
     form.setFieldValue('border', cmp.style.border?.split('px solid')[0] ?? 0)
   }, [cmp.style, form, cmp.content])
-  // todo  border font weight line height 
   return (
     <div >
       <h3 style={{ textAlign: 'center', margin: '1rem 0' }}> Edit Component</h3>

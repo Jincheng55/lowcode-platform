@@ -10,13 +10,14 @@ const EditCanvas = () => {
     if (newVal.height) newVal.height = Number(newVal.height)
     if (newVal.backgroundImage) newVal.backgroundImage = `url(${newVal.backgroundImage})`
     if (newVal.backgroundColor) newVal.backgroundColor = `#${newVal.backgroundColor.toHex()}`
+    if (newVal.color) newVal.color = `#${newVal.color.toHex()}`
     console.log(newVal)
     canvas.setCanvas(newVal)
   }
 
   return (
     <div >
-      <h3 style={{ textAlign: 'center', margin: '1rem 0' }}> Edit Background</h3>
+      <h3 style={{ textAlign: 'center', margin: '1rem 0' }}>Edit Background</h3>
       <Form
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 16 }}
@@ -34,6 +35,12 @@ const EditCanvas = () => {
           <Input placeholder='input url' />
         </Form.Item>
         <Form.Item label="bgColor" name='backgroundColor'>
+          <ColorPicker />
+        </Form.Item>
+        <Form.Item label="fontSize" name='fontSize'>
+          <Input type='number' placeholder='input number (px)' />
+        </Form.Item>
+        <Form.Item label="fontColor" name='color'>
           <ColorPicker />
         </Form.Item>
       </Form>
